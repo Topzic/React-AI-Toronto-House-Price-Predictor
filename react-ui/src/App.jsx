@@ -100,24 +100,45 @@ function App() {
         <button type="submit" className="btn btn-primary mt-3">Submit</button>
       </form>
 
-        <div className="mt-3">
-          {/* <h2>Prediction Results</h2> */}
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Raw Prediction Values</th>
-                <th>Predicted Species</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{predictionData.rawValues && predictionData.rawValues.map((value, idx) => <p key={idx}>{value}</p>)}</td> {/* Display the raw prediction values */}
-                <td>{predictionData.species}</td> {/* Display the predicted species */}
-              </tr>
-            </tbody>
-          </table>
+      <div className="mt-3">
 
-      </div>
+        {/* <h2>Prediction Results</h2> */}
+        <table className="table">
+          <thead>
+            <tr>
+              <th></th>
+              <th colSpan="3">Raw Prediction Values</th>
+            </tr>
+            <tr>
+              <th></th>
+              <th>setosa</th>
+              <th>virginica</th>
+              <th>versicolor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row"></th>
+              <td>{predictionData.rawValues && predictionData.rawValues[0]}</td>
+              <td>{predictionData.rawValues && predictionData.rawValues[1]}</td>
+              <td>{predictionData.rawValues && predictionData.rawValues[2]}</td>
+            </tr>
+            <tr>
+              <th scope="row"></th>
+              <td>{(predictionData.rawValues && (predictionData.rawValues[0] * 100).toFixed(2))}%</td>
+              <td>{(predictionData.rawValues && (predictionData.rawValues[1] * 100).toFixed(2))}%</td>
+              <td>{(predictionData.rawValues && (predictionData.rawValues[2] * 100).toFixed(2))}%</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+
+
+        <div className='mt-3'>
+          <img className='rounded img-fluid' src={predictionData.species + '.jpg'} style={{ maxWidth: '500px', maxHeight: '500px' }} />
+        </div>
+        <h3 colSpan="mt-3">Predicted Species: {predictionData.species && predictionData.species.charAt(0).toUpperCase() + predictionData.species.slice(1)} </h3>
+
       </div>
   );
 }
