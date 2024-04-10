@@ -9,5 +9,5 @@ module.exports = function (app) {
     });
   });
 
-  app.get("/run", index.trainAndPredict);
+  app.get("/run", index.predictHousePrice);
 };

@@ -35,7 +35,7 @@ function main() {
   // Co-Ownership Apt: 6,
   // Link: 7,
   // Comm Element Condo: 8,
-  const newX = [[7, 8, 3500, 4, 2]]; // Example input for prediction
+  const newX = [[1, 1, 800, 1, 0]]; // Example input for prediction
 
   // Make prediction using the loaded model
   console.log("Making prediction...");
