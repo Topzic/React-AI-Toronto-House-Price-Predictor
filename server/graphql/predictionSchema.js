@@ -1,25 +1,3 @@
-// GraphQL CreateHousePrediction Example
-//
-// mutation CreateHousePrediction($prediction: Float!, $bedrooms: Float!, $bathrooms: Float!, $sqft: Float!, $parking: Float!, $houseType: Float!) {
-//     createHousePrediction(prediction: $prediction, bedrooms: $bedrooms, bathrooms: $bathrooms, sqft: $sqft, parking: $parking, houseType: $houseType) {
-//       prediction
-//       bedrooms
-//       bathrooms
-//       sqft
-//       parking
-//       houseType
-//     }
-//   }
-
-// {
-//     "prediction": 654233,
-//     "bedrooms": 3,
-//     "bathrooms": 2,
-//     "sqft": 2000,
-//     "parking": 0,
-//     "houseType": 0
-// }
-
 const GraphQLSchema = require("graphql").GraphQLSchema;
 const GraphQLObjectType = require("graphql").GraphQLObjectType;
 const GraphQLList = require("graphql").GraphQLList;
@@ -116,13 +94,18 @@ const mutation = new GraphQLObjectType({
             type: new GraphQLNonNull(GraphQLFloat),
           },
         },
-        resolve: function (root, params) {
-          const predictionModel = new HousePredictionModel(params);
-          const newPrediction = predictionModel.save();
-          if (!newPrediction) {
-            throw new Error("Error creating house prediction");
+        resolve: async function (root, params) {
+          try {
+            const predictionModel = new HousePredictionModel(params);
+            const newPrediction = await predictionModel.save();
+            console.log("params: " + params);
+            if (!newPrediction) {
+              throw new Error("Error creating house prediction");
+            }
+            return newPrediction;
+          } catch (error) {
+            throw new Error(error.message);
           }
-          return newPrediction;
         },
       },
     };
