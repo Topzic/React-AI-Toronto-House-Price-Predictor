@@ -34,7 +34,19 @@ app.use(
   })
 );
 
-// Prediction endpoint
+// Prediction endpoint to retrieve all predictions
+app.get("/predictions", async (req, res) => {
+    try {
+      const predictions = await HousePredictionModel.find().exec();
+  
+      res.status(200).json(predictions);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+  
+
+// Prediction endpoint to create a prediction
 app.post("/prediction", async (req, res) => {
   try {
     console.log("req.body: " + req.body);
