@@ -1,3 +1,25 @@
+// GraphQL CreateHousePrediction Example
+//
+// mutation CreateHousePrediction($prediction: Float!, $bedrooms: Float!, $bathrooms: Float!, $sqft: Float!, $parking: Float!, $houseType: Float!) {
+//     createHousePrediction(prediction: $prediction, bedrooms: $bedrooms, bathrooms: $bathrooms, sqft: $sqft, parking: $parking, houseType: $houseType) {
+//       prediction
+//       bedrooms
+//       bathrooms
+//       sqft
+//       parking
+//       houseType
+//     }
+//   }
+
+// {
+//     "prediction": 654233,
+//     "bedrooms": 3,
+//     "bathrooms": 2,
+//     "sqft": 2000,
+//     "parking": 0,
+//     "houseType": 0
+// }
+
 const GraphQLSchema = require("graphql").GraphQLSchema;
 const GraphQLObjectType = require("graphql").GraphQLObjectType;
 const GraphQLList = require("graphql").GraphQLList;
