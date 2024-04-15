@@ -42,7 +42,6 @@ app.get("/run", index.predictHousePrice);
 app.get("/predictions", async (req, res) => {
   try {
     const predictions = await HousePredictionModel.find().exec();
-    console.log(predictions)
     res.status(200).json(predictions);
   } catch (error) {
     res.status(500).json({ error: error.message });
