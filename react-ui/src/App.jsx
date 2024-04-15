@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Im
 import Home from './Home.jsx';
 import Nav from './Navigation.jsx';
 import Prediction from './Prediction.jsx';
+import PredictionList from './PredictionList.jsx';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route exact path="/" element={<Home />} /> {/* Use element prop with JSX element */}
           <Route exact path="/home" element={<Home />} /> {/* Use element prop with JSX element */}
           <Route path="/prediction" element={<Prediction />} /> {/* Use element prop with JSX element */}
+          <Route path="/list" element={<PredictionList />} /> {/* Use element prop with JSX element */}
         </Routes>
       </div>
     </Router>

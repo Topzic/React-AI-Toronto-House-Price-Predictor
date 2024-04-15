@@ -19,7 +19,7 @@ function Nav() {
               <Link className="nav-link" to="/prediction">Prediction</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/view-prediction">List Prediction</Link>
+              <Link className="nav-link" to="/list">List Prediction</Link>
             </li>
           </ul>
         </div>
