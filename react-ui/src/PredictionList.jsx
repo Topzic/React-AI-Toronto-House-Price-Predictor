@@ -38,6 +38,36 @@ function PredictionList() {
     fetchData();
   }, []);
 
+  /**
+   * 
+   * @param {*} houseType 
+   * @returns House Type as String
+   */
+  function convertHouseType(houseType) {
+    switch (houseType) {
+      case 0:
+        return "Condo Apt";
+      case 1:
+        return "Semi-Detached";
+      case 2:
+          return "Detached";
+      case 3:
+        return "Condo Townhouse";
+      case 4:
+        return "Duplex";
+      case 5:
+        return "Att/Row/Twnhouse";
+      case 6:
+        return "Co-Ownership Apt";
+      case 7:
+        return "Link";
+      case 8:
+        return "Comm Element Condo";
+      default:
+        return "Unknown";
+    }
+  }
+  
   // Filter prediction data based on criteria
   const filteredPredictions = predictionData.filter(prediction => {
     const price = parseFloat(prediction.prediction);
@@ -167,12 +197,12 @@ function PredictionList() {
           {filteredPredictions.map((prediction, index) => (
             <tr key={prediction._id}>
               <td>{index + 1}</td>
-              <td>{prediction.prediction}</td>
+              <td>${parseFloat(prediction.prediction).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
               <td>{prediction.bedrooms}</td>
               <td>{prediction.bathrooms}</td>
               <td>{prediction.sqft}</td>
               <td>{prediction.parking}</td>
-              <td>{prediction.houseType}</td>
+              <td>{convertHouseType(prediction.houseType)}</td>
             </tr>
           ))}
         </tbody>

@@ -1,28 +1,29 @@
-const fs = require("fs");
-const { RandomForestRegression } = require("ml-random-forest");
+// Import required libraries
+const fs = require("fs"); // Library for file system operations
+const { RandomForestRegression } = require("ml-random-forest"); // Machine learning library for Random Forest Regression
 
 // Function to load the trained model from the JSON file
 function loadModel(modelFileName) {
-  const modelJSON = fs.readFileSync(modelFileName);
-  const modelData = JSON.parse(modelJSON);
-  const model = RandomForestRegression.load(modelData);
-  return model;
+  const modelJSON = fs.readFileSync(modelFileName); // Read model data from JSON file
+  const modelData = JSON.parse(modelJSON); // Parse model JSON data
+  const model = RandomForestRegression.load(modelData); // Load model from parsed data
+  return model; // Return loaded model
 }
 
 // Function to make predictions using the trained model
 function makePrediction(model, data) {
-  const prediction = model.predict(data);
-  return prediction;
+  const prediction = model.predict(data); // Make prediction using the model
+  return prediction; // Return prediction
 }
 
 // Main function
 function main() {
-  const modelFileName = "house_price_prediction_model.json";
+  const modelFileName = "house_price_prediction_model.json"; // Path to trained model JSON file
 
   // Load the trained model
-  console.log("Loading the trained model...");
-  const model = loadModel(modelFileName);
-  console.log("Model loaded successfully.");
+  console.log("Loading the trained model..."); // Log model loading start
+  const model = loadModel(modelFileName); // Load the model from file
+  console.log("Model loaded successfully."); // Log successful model loading
 
   // Example input data for prediction
   // Bedroom, Bathroom, Sqft, Parking, House Type
@@ -38,9 +39,9 @@ function main() {
   const newX = [[1, 1, 800, 1, 0]]; // Example input for prediction
 
   // Make prediction using the loaded model
-  console.log("Making prediction...");
-  const prediction = makePrediction(model, newX);
-  console.log("Prediction:", prediction);
+  console.log("Making prediction..."); // Log prediction making start
+  const prediction = makePrediction(model, newX); // Make prediction using loaded model
+  console.log("Prediction:", prediction); // Log prediction result
 }
 
 // Run the main function

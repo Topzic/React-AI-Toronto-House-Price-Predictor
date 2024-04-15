@@ -1,68 +1,64 @@
-const fs = require("fs");
-const { RandomForestRegression } = require("ml-random-forest");
-const server = require("../../server.js");
+// Import required libraries
+const fs = require("fs"); // Library for file system operations
+const { RandomForestRegression } = require("ml-random-forest"); // Machine learning library for Random Forest Regression
+const server = require("../../server.js"); // Server module
 
 // Function to load the trained model from the JSON file
 function loadModel(modelFileName) {
-  const modelJSON = fs.readFileSync(modelFileName);
-  const modelData = JSON.parse(modelJSON);
-  const model = RandomForestRegression.load(modelData);
-  return model;
+  const modelJSON = fs.readFileSync(modelFileName); // Read model data from JSON file
+  const modelData = JSON.parse(modelJSON); // Parse model JSON data
+  const model = RandomForestRegression.load(modelData); // Load model from parsed data
+  return model; // Return loaded model
 }
 
 // Function to make predictions using the trained model
 function makePrediction(model, data) {
-  const prediction = model.predict(data);
-  return prediction;
+  const prediction = model.predict(data); // Make prediction using the model
+  return prediction; // Return prediction
 }
 
+// Exported function to predict house price
 exports.predictHousePrice = function (req, res) {
   // Extract parameters from the request query
   const { bedrooms, bathrooms, sqft, parking, houseType } = req.query;
 
-  // Log the extracted parameters
-  // console.log("Extracted Parameters:");
-  // console.log("Bedrooms:", bedrooms);
-  // console.log("Bathrooms:", bathrooms);
-  // console.log("Sqft:", sqft);
-  // console.log("Parking:", parking);
-  // console.log("House Type:", houseType);
-
   // Load the trained model
-  console.log("Loading the trained model...");
-  const modelFileName = "house_price_prediction_model.json";
-  const model = loadModel(modelFileName);
-  console.log("Model loaded successfully.");
+  console.log("Loading the trained model..."); // Log model loading start
+  const modelFileName = "house_price_prediction_model.json"; // Path to trained model JSON file
+  const model = loadModel(modelFileName); // Load the model from file
+  console.log("Model loaded successfully."); // Log successful model loading
 
   // Prepare input data for prediction
   const newData = [
     [
-      parseFloat(bedrooms),
-      parseFloat(bathrooms),
-      parseFloat(sqft),
-      parseFloat(parking),
-      parseInt(houseType), // Assuming house type is provided as a number
+      parseFloat(bedrooms), // Convert bedrooms to float
+      parseFloat(bathrooms), // Convert bathrooms to float
+      parseFloat(sqft), // Convert sqft to float
+      parseFloat(parking), // Convert parking to float
+      parseInt(houseType), // Parse houseType as integer
     ],
   ];
 
   // Make prediction using the loaded model
-  console.log("Making prediction...");
-  const prediction = makePrediction(model, newData);
-  console.log("Prediction:", prediction);
-  server.savePrediction(
-    parseFloat(prediction[0]).toFixed(2),
-    bedrooms,
-    bathrooms,
-    sqft,
-    parking,
-    houseType
-  );
-  var dataToSend = {
-    prediction: prediction,
-  };
-  console.log(dataToSend);
-  res.status(200).send(dataToSend);
+  console.log("Making prediction..."); // Log prediction making start
+  const prediction = makePrediction(model, newData); // Make prediction using loaded model
+  console.log("Prediction:", prediction); // Log prediction result
 
-  // Send the prediction as response
-  // res.status(200).send({ prediction: prediction });
+  // Save the prediction
+  server.savePrediction(
+    // Save prediction using server module
+    parseFloat(prediction[0]).toFixed(2), // Format prediction to two decimal places
+    bedrooms, // Pass bedrooms parameter
+    bathrooms, // Pass bathrooms parameter
+    sqft, // Pass sqft parameter
+    parking, // Pass parking parameter
+    houseType // Pass houseType parameter
+  );
+
+  // Prepare data to send as response
+  var dataToSend = {
+    prediction: prediction, // Include prediction in the response
+  };
+  console.log(dataToSend); // Log data to send
+  res.status(200).send(dataToSend); // Send data as response
 };

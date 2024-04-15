@@ -23,6 +23,10 @@ function Prediction() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  /**
+   * Submit user values and returns house price
+   * @param {*} e 
+   */
   const handleSubmit = async (e) => {
     console.log("Submitted...");
     e.preventDefault();
