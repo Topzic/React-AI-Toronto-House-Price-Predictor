@@ -31,7 +31,7 @@ function Prediction() {
       const result = await axios.get(apiUrl, {
         params: formData
       });
-      console.log(result); // Check if prediction data is received
+      console.log(result);
       setPredictionData(result.data.prediction);
     } catch (error) {
       console.log('error in handleSubmit:', error);

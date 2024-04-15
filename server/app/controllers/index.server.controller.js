@@ -1,5 +1,6 @@
 const fs = require("fs");
 const { RandomForestRegression } = require("ml-random-forest");
+const server = require("../../server.js");
 
 // Function to load the trained model from the JSON file
 function loadModel(modelFileName) {
@@ -48,7 +49,14 @@ exports.predictHousePrice = function (req, res) {
   console.log("Making prediction...");
   const prediction = makePrediction(model, newData);
   console.log("Prediction:", prediction);
-
+  server.savePrediction(
+    parseFloat(prediction[0]).toFixed(2),
+    bedrooms,
+    bathrooms,
+    sqft,
+    parking,
+    houseType
+  );
   var dataToSend = {
     prediction: prediction,
   };

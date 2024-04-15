@@ -7,6 +7,8 @@ const configureMongoose = require("./config/mongoose.js");
 const cookieParser = require("cookie-parser");
 const methodOverride = require("method-override");
 const HousePredictionModel = require("./models/Prediction.js");
+// Load the 'index' controller
+const index = require("./app/controllers/index.server.controller.js");
 
 // Create Database Instance
 const db = configureMongoose();
@@ -34,28 +36,28 @@ app.use(
   })
 );
 
+app.get("/run", index.predictHousePrice);
+
 // Prediction endpoint to retrieve all predictions
 app.get("/predictions", async (req, res) => {
-    try {
-      const predictions = await HousePredictionModel.find().exec();
-  
-      res.status(200).json(predictions);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  });
-  
-
-// Prediction endpoint to create a prediction
-app.post("/prediction", async (req, res) => {
   try {
-    console.log("req.body: " + req.body);
+    const predictions = await HousePredictionModel.find().exec();
 
-    // Extract data from the request body
-    const { prediction, bedrooms, bathrooms, sqft, parking, houseType } =
-      req.body;
-    console.log("Prediction: " + prediction);
+    res.status(200).json(predictions);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
+exports.savePrediction = async function (
+  prediction,
+  bedrooms,
+  bathrooms,
+  sqft,
+  parking,
+  houseType
+) {
+  try {
     // Create a new instance of HousePredictionModel
     const newPrediction = new HousePredictionModel({
       prediction,
@@ -70,15 +72,18 @@ app.post("/prediction", async (req, res) => {
     await newPrediction.save();
 
     // Send a success response
-    res.status(200).json({
-      message: "Prediction created successfully",
-      prediction: newPrediction,
-    });
+    // res.status(200).json({
+    //   message: "Prediction created successfully",
+    //   prediction: newPrediction,
+    // });
   } catch (error) {
     // If an error occurs, send an error response
-    res.status(500).json({ error: error.message });
+    console.log("error: " + error.message);
   }
-});
+};
+
+// Prediction endpoint to create a prediction
+app.post("/save-prediction", async (req, res) => {});
 
 // Use the Express application instance to listen to the '5000' port
 const port = process.env.PORT || 5000;
