@@ -24,10 +24,7 @@ app.use(methodOverride());
 app.use(methodOverride("_method"));
 
 const corsOptions = {
-  origin: [
-    "http://localhost:5000",
-    "http://localhost:5173",
-  ], //included origin as true
+  origin: ["http://localhost:5000", "http://localhost:5173"], //included origin as true
   credentials: true, //included credentials as true
 };
 app.use(cors(corsOptions));
@@ -72,7 +69,9 @@ exports.savePrediction = async function (
   bathrooms,
   sqft,
   parking,
-  houseType
+  houseType,
+  lat,
+  long
 ) {
   try {
     // Create a new instance of HousePredictionModel
@@ -83,7 +82,11 @@ exports.savePrediction = async function (
       sqft,
       parking,
       houseType,
+      lat,
+      long,
     });
+
+    // console.log(newPrediction);
 
     // Save the new prediction to the database
     await newPrediction.save();

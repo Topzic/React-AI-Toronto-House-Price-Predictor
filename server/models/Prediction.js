@@ -26,6 +26,14 @@ const PredictionSchema = new Schema({
     type: Number,
     required: true,
   },
+  lat: {
+    type: Number,
+    required: true,
+  },
+  long: {
+    type: Number,
+    required: true,
+  },
 });
 
 // Create the 'Prediction' model out of the 'PredictionSchema'

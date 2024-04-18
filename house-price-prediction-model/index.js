@@ -1,25 +1,26 @@
+// https://github.com/slavaspirin/Toronto-housing-price-prediction
 // Import required libraries
 const fs = require("fs"); // Library for file system operations
 const XLSX = require("xlsx"); // Library for working with Excel files
 const { RandomForestRegression } = require("ml-random-forest"); // Machine learning library for Random Forest Regression
 
 // Function to parse sqft column
-function parseSqft(sqft) {
-  // Check if sqft is not available
-  if (sqft === "N/A") {
-    return NaN; // Return NaN if sqft is not available
-  }
+// function parseSqft(sqft) {
+//   // Check if sqft is not available
+//   if (sqft === "N/A") {
+//     return NaN; // Return NaN if sqft is not available
+//   }
 
-  // Check if sqft is in range
-  const range = sqft.match(/(\d+)-(\d+)/);
-  if (range) {
-    const min = parseInt(range[1]); // Extract minimum sqft from range
-    const max = parseInt(range[2]); // Extract maximum sqft from range
-    return (min + max) / 2; // Return average sqft
-  } else {
-    return parseInt(sqft.match(/\d+/)[0]); // Return sqft as integer
-  }
-}
+//   // Check if sqft is in range
+//   const range = sqft.match(/(\d+)-(\d+)/);
+//   if (range) {
+//     const min = parseInt(range[1]); // Extract minimum sqft from range
+//     const max = parseInt(range[2]); // Extract maximum sqft from range
+//     return (min + max) / 2; // Return average sqft
+//   } else {
+//     return parseInt(sqft.match(/\d+/)[0]); // Return sqft as integer
+//   }
+// }
 
 // Function to parse bedrooms column
 function parseBedrooms(bedrooms) {
@@ -38,12 +39,32 @@ function parseBedrooms(bedrooms) {
   }
 }
 
-// Function to parse parking column
-function parseParking(parking) {
-  // Check if parking contains numeric information
-  const numericParking = parseFloat(parking.replace(/[^0-9.]/g, ""));
-  return isNaN(numericParking) ? 0 : numericParking; // Return parsed parking value or 0 if not available
+// Function to scale features using min-max scaling
+function minMaxScale(features) {
+  // Find the minimum and maximum values in the feature array
+  const min = Math.min(...features);
+  const max = Math.max(...features);
+  console.log("min:", min);
+  console.log("max:", max);
+
+  // Map over each feature and scale it between 0 and 1 using min-max scaling formula
+  const scaledFeatures = features.map(
+    (feature) => (feature - min) / (max - min)
+  );
+
+  // Print the scaled features
+  // console.log("Scaled Features:", scaledFeatures);
+
+  // Return the scaled features
+  return scaledFeatures;
 }
+
+// Function to parse parking column
+// function parseParking(parking) {
+//   // Check if parking contains numeric information
+//   const numericParking = parseFloat(parking.replace(/[^0-9.]/g, ""));
+//   return isNaN(numericParking) ? 0 : numericParking; // Return parsed parking value or 0 if not available
+// }
 
 // Function to parse type column
 function parseType(type) {
@@ -77,6 +98,8 @@ function readDataFromExcel(filename, callback) {
     "bathrooms",
     "sqft",
     "parking",
+    "lat",
+    "long",
   ];
 
   const validTypes = new Set([
@@ -101,9 +124,11 @@ function readDataFromExcel(filename, callback) {
     // Check if all numeric columns have valid values
     return numericColumns.every((col) => {
       const value = row[col];
+      // console.log(`Column: ${col}, Value: ${value}`); // Add this line for logging
       return (
         value !== undefined &&
-        !isNaN(parseFloat(value.replace(/[^0-9.-]/g, "")))
+        // !isNaN(parseFloat(value.replace(/[^0-9.-]/g, "")))
+        !isNaN(parseFloat(value))
       );
     });
   });
@@ -113,7 +138,7 @@ function readDataFromExcel(filename, callback) {
 
 // Main function
 function main() {
-  const dataFile = "data.xlsx"; // Path to Excel file containing data
+  const dataFile = "houses.csv"; // Path to Excel file containing data
 
   // Read data from Excel file
   console.log("Reading data from Excel file..."); // Log operation start
@@ -126,17 +151,20 @@ function main() {
     const X = data.map((row) => [
       // Prepare features matrix
       parseBedrooms(row.bedrooms), // Parse bedrooms column
-      parseFloat(row.bathrooms.replace(/[^0-9.]/g, "")), // Parse bathrooms column
-      parseSqft(row.sqft), // Parse sqft column
-      parseParking(row.parking.replace(/[^0-9.]/g, "")), // Parse parking column
+      parseFloat(row.bathrooms), // Parse bathrooms column
+      parseFloat(row.sqft), // Parse sqft column
+      parseFloat(row.parking), // Parse parking column
       parseType(row.type), // Parse type column
+      ...minMaxScale([parseFloat(row.lat), parseFloat(row.long)]), // Scale latitude and longitude features
     ]);
-    console.log("X: " + X); // Log features matrix
+
+    // Prints off all the records
+    // console.log("X: " + X); // Log features matrix
 
     const y = data.map(
       (
         row // Prepare target array
-      ) => parseFloat(row.final_price.replace(/[^0-9.-]/g, "")) // Parse final price column
+      ) => parseFloat(row.final_price) // Parse final price column
     );
 
     // Train the model with progress indicator
@@ -149,7 +177,7 @@ function main() {
       maxDepth: 4, // Maximum depth of the trees
       onProgress: (progress) => {
         // Progress callback
-        console.log(`Training progress: ${progress * 100}%`); // Log training progress
+        console.error(`Training progress: ${progress * 100}%`); // Log training progress
       },
     });
     console.log("Model trained successfully."); // Log successful model training
@@ -160,7 +188,7 @@ function main() {
     console.log(`Trained model saved to ${modelFileName}`); // Log successful model saving
 
     // Make a prediction
-    const newX = [[2, 2, 800, 1, 0]]; // Example input for prediction
+    const newX = [[2, 2, 800, 1, 0, 43.6618956, -79.3857479]];
     console.log("Making prediction..."); // Log prediction making start
     const prediction = model.predict(newX); // Make prediction
     console.log("Prediction:", prediction); // Log prediction result

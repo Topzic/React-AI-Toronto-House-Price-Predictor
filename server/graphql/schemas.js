@@ -70,6 +70,12 @@ const housePredictionType = new GraphQLObjectType({
       houseType: {
         type: GraphQLFloat,
       },
+      lat: {
+        type: GraphQLFloat,
+      },
+      long: {
+        type: GraphQLFloat,
+      },
     };
   },
 });
@@ -317,6 +323,12 @@ const mutation = new GraphQLObjectType({
             type: new GraphQLNonNull(GraphQLFloat),
           },
           houseType: {
+            type: new GraphQLNonNull(GraphQLFloat),
+          },
+          lat: {
+            type: new GraphQLNonNull(GraphQLFloat),
+          },
+          long: {
             type: new GraphQLNonNull(GraphQLFloat),
           },
         },

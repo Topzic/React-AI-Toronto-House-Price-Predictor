@@ -192,6 +192,9 @@ function PredictionList() {
             <th>Sqft</th>
             <th>Parking</th>
             <th>House Type</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th>View Location</th>
           </tr>
         </thead>
         <tbody>
@@ -204,6 +207,10 @@ function PredictionList() {
               <td>{prediction.sqft}</td>
               <td>{prediction.parking}</td>
               <td>{convertHouseType(prediction.houseType)}</td>
+              <td>{parseFloat(prediction.lat).toFixed(6)}</td>
+              <td>{parseFloat(prediction.long).toFixed(6)}</td>
+              <td><a target='_blank' href={`http://maps.google.com/maps?z=12&t=m&q=${prediction.lat}+${prediction.long}`}>View</a></td>
+              { /** Street View Preview */}
             </tr>
           ))}
         </tbody>

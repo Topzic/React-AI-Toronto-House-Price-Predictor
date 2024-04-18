@@ -20,7 +20,8 @@ function makePrediction(model, data) {
 // Exported function to predict house price
 exports.predictHousePrice = function (req, res) {
   // Extract parameters from the request query
-  const { bedrooms, bathrooms, sqft, parking, houseType } = req.query;
+  const { bedrooms, bathrooms, sqft, parking, houseType, lat, long } =
+    req.query;
 
   // Load the trained model
   console.log("Loading the trained model..."); // Log model loading start
@@ -36,9 +37,11 @@ exports.predictHousePrice = function (req, res) {
       parseFloat(sqft), // Convert sqft to float
       parseFloat(parking), // Convert parking to float
       parseInt(houseType), // Parse houseType as integer
+      parseFloat(lat), // Convert parking to float
+      parseFloat(long), // Convert parking to float
     ],
   ];
-
+  console.log(newData);
   // Make prediction using the loaded model
   console.log("Making prediction..."); // Log prediction making start
   const prediction = makePrediction(model, newData); // Make prediction using loaded model
@@ -52,7 +55,9 @@ exports.predictHousePrice = function (req, res) {
     bathrooms, // Pass bathrooms parameter
     sqft, // Pass sqft parameter
     parking, // Pass parking parameter
-    houseType // Pass houseType parameter
+    houseType, // Pass houseType parameter
+    lat,
+    long
   );
 
   // Prepare data to send as response

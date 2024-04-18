@@ -13,7 +13,9 @@ function Prediction() {
     bathrooms: '',
     sqft: '',
     parking: '',
-    houseType: ''
+    houseType: '',
+    lat: '',
+    long: ''
   });
   const [predictionData, setPredictionData] = useState('');
   const [showLoading, setShowLoading] = useState(false);
@@ -80,7 +82,23 @@ function Prediction() {
                   <input type="number" className="form-control" name="parking" value={formData.parking} required onChange={handleChange} />
                 </div>
               </div>
+
             </div>
+            <div className="row">
+            <div className="col-md-6">
+                <div className="form-group">
+                  <label>Latitude:</label>
+                  <input type="number" className="form-control" name="lat" value={formData.lat} required onChange={handleChange} />
+                </div>
+              </div>
+              <div className="col-md-6">
+                <div className="form-group">
+                  <label>Longitude:</label>
+                  <input type="number" className="form-control" name="long" value={formData.long} required onChange={handleChange} />
+                </div>
+              </div>
+            </div>
+
             <div className="row">
               <div className="col-md-6">
                 <div className="form-group">
