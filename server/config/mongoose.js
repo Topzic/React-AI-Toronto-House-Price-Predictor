@@ -12,8 +12,11 @@ module.exports = function () {
       console.log("Error in db connection", err);
     });
 
-  // Load the 'User' model
+  // Load the 'Prediction' model
   require("../models/Prediction");
+
+  // Load the 'User' model
+  require("../models/User.js");
 
   // Return the Mongoose connection instance
   return db;

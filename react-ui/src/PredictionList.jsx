@@ -21,7 +21,7 @@ function PredictionList() {
   const [minParking, setMinParking] = useState('');
   const [maxParking, setMaxParking] = useState('');
 
-  const apiUrl = "/api/predictions";
+  const apiUrl = "http://localhost:5000/predictions";
 
   useEffect(() => {
     async function fetchData() {
@@ -36,6 +36,7 @@ function PredictionList() {
       }
     }
     fetchData();
+    console.log(predictionData)
   }, []);
 
   /**

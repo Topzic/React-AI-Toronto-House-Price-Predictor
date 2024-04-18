@@ -1,12 +1,14 @@
 const express = require("express");
 const { graphqlHTTP } = require("express-graphql");
 const bodyParser = require("body-parser");
-const { GraphQLSchema } = require("graphql");
-const { queryType, mutation } = require("./graphql/predictionSchema");
+// const { GraphQLSchema } = require("graphql");
+// const { queryType, mutation } = require("./graphql/predictionSchema");
+var schema = require("./graphql/schemas.js");
 const configureMongoose = require("./config/mongoose.js");
 const cookieParser = require("cookie-parser");
 const methodOverride = require("method-override");
 const HousePredictionModel = require("./models/Prediction.js");
+var cors = require("cors");
 // Load the 'index' controller
 const index = require("./app/controllers/index.server.controller.js");
 
@@ -21,18 +23,34 @@ app.use(cookieParser());
 app.use(methodOverride());
 app.use(methodOverride("_method"));
 
+const corsOptions = {
+  origin: [
+    "http://localhost:5000",
+    "http://localhost:5173",
+  ], //included origin as true
+  credentials: true, //included credentials as true
+};
+app.use(cors(corsOptions));
+
 // GraphQL schema
-const schema = new GraphQLSchema({
-  query: queryType,
-  mutation: mutation,
-});
+// const schema = new GraphQLSchema({
+//   query: queryType,
+//   mutation: mutation,
+// });
 
 // Configure GraphQL endpoint
 app.use(
   "/graphql",
-  graphqlHTTP({
-    schema: schema,
-    graphiql: true,
+  graphqlHTTP((request, response) => {
+    return {
+      schema: schema,
+      rootValue: global,
+      graphiql: true,
+      context: {
+        req: request,
+        res: response,
+      },
+    };
   })
 );
 

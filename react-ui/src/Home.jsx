@@ -5,12 +5,13 @@ import { Link } from 'react-router-dom'; // Import Link for navigation
 import { Container, Row, Col, Button } from 'react-bootstrap'; // Import components from react-bootstrap
 
 function Home() {
+
   return (
     <Container>
       <Row className="mt-5">
         <Col>
           <div className="jumbotron">
-            <h1 className="display-4">Welcome to the House Price Prediction Website!</h1>
+            <h1 className="display-4">Welcome to the House Price Prediction Hub!</h1>
             <p className="lead">
               We help you predict house prices based on various factors such as bedrooms, bathrooms, square footage, parking spots, and house type.
             </p>
@@ -41,6 +42,7 @@ function Home() {
         </Col>
       </Row>
     </Container>
+    
   );
 }
 
