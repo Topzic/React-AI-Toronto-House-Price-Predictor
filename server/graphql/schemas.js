@@ -32,9 +32,9 @@ const userType = new GraphQLObjectType({
       _id: {
         type: GraphQLFloat,
       },
-      username: {
-        type: GraphQLString,
-      },
+      // username: {
+      //   type: GraphQLString,
+      // },
       email: {
         type: GraphQLString,
       },
@@ -208,30 +208,30 @@ const mutation = new GraphQLObjectType({
             unqiue: true,
             required: true,
           },
-          username: {
-            type: GraphQLString,
-            required: true,
-          },
+          // username: {
+          //   type: GraphQLString,
+          //   required: true,
+          // },
           password: {
             type: GraphQLString,
             required: true,
           },
         },
         resolve: async function (root, params, context) {
-          let { username, email, password } = params;
+          let { /*username,*/ email, password } = params;
 
           // Check if a user with the same email already exists
           const existingUser = await UserModel.findOne({ email }).exec();
           if (existingUser) {
             // If a user with the same email exists, append a unique identifier to the username
             // username = `${username || email.split("@")[0]}_${Date.now()}`;
-            console.log("User already exsist!!");
+            console.log("User already exsist");
+            return;
           }
 
-          const userModel = new UserModel({ username, email, password });
-          console.log("userModel: ", userModel);
+          const userModel = new UserModel({ /*username,*/ email, password });
           const newUser = await userModel.save();
-          console.log("newUser: ", newUser);
+          console.log("User Successfully Registred: ", newUser);
           if (!newUser) {
             throw new Error("Error creating user");
           }

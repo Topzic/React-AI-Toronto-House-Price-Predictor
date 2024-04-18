@@ -13,7 +13,7 @@ function Home() {
           <div className="jumbotron">
             <h1 className="display-4">Welcome to the House Price Prediction Hub!</h1>
             <p className="lead">
-              We help you predict house prices based on various factors such as bedrooms, bathrooms, square footage, parking spots, and house type.
+              We help you predict house prices based on various factors such as bedrooms, bathrooms, square footage, parking spots, longitude, latitude, and house type.
             </p>
             <hr className="my-4" />
             <p>

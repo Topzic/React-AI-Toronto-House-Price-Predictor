@@ -54,7 +54,7 @@ function Login() {
             signIn({
               auth: {
                 token: data.loginUser.token,
-                expiresIn: 1,
+                expiresIn: 3600,
                 tokenType: "Bearer",
                 authState: { email: data.loginUser.email },
               }
@@ -72,21 +72,23 @@ function Login() {
             { isAuthenticated ? (
                 <Home screen={screen} /> ) : (
 
-                <Form onSubmit={handleLogin}>
+                <Form onSubmit={handleLogin} style={{ marginTop: "15%" }}>
                     
+                  <p>Don&apos;t have an account? <a href='/registration'>Sign up!</a></p>
+
                     <Form.Group>
                         <Form.Label> Email:</Form.Label>
                         <Form.Control id="email" type="email"  onChange={(event) => setEmail(event.target.value)} 
-                            placeholder="Email:" />
+                            placeholder="example@hotmail.com" />
                     </Form.Group>                    
                     
                     <Form.Group>
                         <Form.Label> Password:</Form.Label>
                         <Form.Control id="password" type="password"  onChange={(event) => setPassword(event.target.value)}
-                            placeholder="Password:" />
+                            placeholder="" />
                     </Form.Group>  
             
-                    <Button className='mt-3' size = "lg" variant="primary" type="submit" >
+                    <Button className='mt-3' variant="primary" type="submit" >
                         Login
                     </Button>
                   
