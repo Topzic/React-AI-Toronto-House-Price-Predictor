@@ -55,8 +55,10 @@ function Login() {
               auth: {
                 token: data.loginUser.token,
                 expiresIn: 3600,
-                tokenType: "Bearer",
-                authState: { email: data.loginUser.email },
+                tokenType: "Bearer"
+              },
+              userState: {
+                email: data.loginUser.email,
               }
             })
             navigate('/home');

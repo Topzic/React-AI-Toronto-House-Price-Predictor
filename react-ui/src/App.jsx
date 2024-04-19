@@ -7,6 +7,7 @@ import Prediction from './Prediction.jsx';
 import PredictionList from './PredictionList.jsx';
 import CreateUser from './CreateUser.jsx';
 import Login from './Login.jsx';
+import Profile from './Profile.jsx'
 import useSignOut from 'react-auth-kit/hooks/useSignOut';
 import { useNavigate } from 'react-router-dom';
 import RequireAuth from '@auth-kit/react-router/RequireAuth'
@@ -55,6 +56,9 @@ function App(props) {
                   ) : (
                   <>
                     <li className="nav-item">
+                      <Link className="nav-link" to="/profile">My Profile</Link>
+                    </li>
+                    <li className="nav-item">
                       <Link className="nav-link" onClick={() => handleSignOut()}>Logout</Link>
                     </li>
                   </>
@@ -69,12 +73,17 @@ function App(props) {
           <Route exact path="/" element={<Home />} />
           <Route exact path="/home" element={<Home />} />
           
-          <Route path="/prediction" element={
-          <RequireAuth fallbackPath={'/login'}>
-                <Prediction/>
-                  </RequireAuth>
-              }
-            />
+          <Route path="/prediction" element={ 
+            <RequireAuth fallbackPath={'/login'}>
+                  <Prediction/>
+            </RequireAuth>
+          }/>
+
+          <Route path="/profile" element={ 
+            <RequireAuth fallbackPath={'/login'}>
+                  <Profile/>
+            </RequireAuth>
+          }/>
 
           <Route path="/list" element={<PredictionList />} />
           <Route path="/login" element={<Login />} />

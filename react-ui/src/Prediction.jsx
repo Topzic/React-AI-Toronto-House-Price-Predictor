@@ -179,6 +179,9 @@ function Prediction() {
           </table>
         </div>
       </div>
+
+
+
     </div>
   );
 }

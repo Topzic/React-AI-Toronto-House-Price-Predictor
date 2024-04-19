@@ -4,24 +4,6 @@ const fs = require("fs"); // Library for file system operations
 const XLSX = require("xlsx"); // Library for working with Excel files
 const { RandomForestRegression } = require("ml-random-forest"); // Machine learning library for Random Forest Regression
 
-// Function to parse sqft column
-// function parseSqft(sqft) {
-//   // Check if sqft is not available
-//   if (sqft === "N/A") {
-//     return NaN; // Return NaN if sqft is not available
-//   }
-
-//   // Check if sqft is in range
-//   const range = sqft.match(/(\d+)-(\d+)/);
-//   if (range) {
-//     const min = parseInt(range[1]); // Extract minimum sqft from range
-//     const max = parseInt(range[2]); // Extract maximum sqft from range
-//     return (min + max) / 2; // Return average sqft
-//   } else {
-//     return parseInt(sqft.match(/\d+/)[0]); // Return sqft as integer
-//   }
-// }
-
 // Function to parse bedrooms column
 function parseBedrooms(bedrooms) {
   const match = bedrooms.match(/(\d+)\s*\+\s*(\d+)\s*beds/); // Check if bedrooms contain additional beds
@@ -38,33 +20,6 @@ function parseBedrooms(bedrooms) {
     }
   }
 }
-
-// Function to scale features using min-max scaling
-function minMaxScale(features) {
-  // Find the minimum and maximum values in the feature array
-  const min = Math.min(...features);
-  const max = Math.max(...features);
-  console.log("min:", min);
-  console.log("max:", max);
-
-  // Map over each feature and scale it between 0 and 1 using min-max scaling formula
-  const scaledFeatures = features.map(
-    (feature) => (feature - min) / (max - min)
-  );
-
-  // Print the scaled features
-  // console.log("Scaled Features:", scaledFeatures);
-
-  // Return the scaled features
-  return scaledFeatures;
-}
-
-// Function to parse parking column
-// function parseParking(parking) {
-//   // Check if parking contains numeric information
-//   const numericParking = parseFloat(parking.replace(/[^0-9.]/g, ""));
-//   return isNaN(numericParking) ? 0 : numericParking; // Return parsed parking value or 0 if not available
-// }
 
 // Function to parse type column
 function parseType(type) {
@@ -90,8 +45,8 @@ function readDataFromExcel(filename, callback) {
   const worksheet = workbook.Sheets[sheetName]; // Get the first sheet
   const data = XLSX.utils.sheet_to_json(worksheet); // Convert sheet to JSON data
 
+  // Numeric data columns
   const numericColumns = [
-    // List of columns expected to contain numeric data
     "final_price",
     "list_price",
     "bedrooms",
@@ -102,8 +57,8 @@ function readDataFromExcel(filename, callback) {
     "long",
   ];
 
+  // Valid property types
   const validTypes = new Set([
-    // Set of valid property types
     "Condo Apt",
     "Semi-Detached",
     "Detached",
@@ -124,7 +79,7 @@ function readDataFromExcel(filename, callback) {
     // Check if all numeric columns have valid values
     return numericColumns.every((col) => {
       const value = row[col];
-      // console.log(`Column: ${col}, Value: ${value}`); // Add this line for logging
+      // console.log(`Column: ${col}, Value: ${value}`);
       return (
         value !== undefined &&
         // !isNaN(parseFloat(value.replace(/[^0-9.-]/g, "")))
@@ -155,7 +110,8 @@ function main() {
       parseFloat(row.sqft), // Parse sqft column
       parseFloat(row.parking), // Parse parking column
       parseType(row.type), // Parse type column
-      ...minMaxScale([parseFloat(row.lat), parseFloat(row.long)]), // Scale latitude and longitude features
+      parseFloat(row.lat),
+      parseFloat(row.long), // Scale latitude and longitude features
     ]);
 
     // Prints off all the records

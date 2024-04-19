@@ -4,10 +4,23 @@ import axios from 'axios';
 import Spinner from 'react-bootstrap/Spinner';
 import Table from 'react-bootstrap/Table';
 import { Form, Col, Row } from 'react-bootstrap';
+import GoogleMapReact from 'google-map-react';
+import CustomMarker from './CustomMarker';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+// Default map coordinates and zoom level
+const defaultProps = {
+  center: {
+    lat: 43.65115280819503,
+    lng: -79.38317571139164
+  },
+  zoom: 12
+};
+
+
 function PredictionList() {
+
   const [predictionData, setPredictionData] = useState([]);
   const [showLoading, setShowLoading] = useState(false);
   const [minPrice, setMinPrice] = useState('');
@@ -21,7 +34,7 @@ function PredictionList() {
   const [minParking, setMinParking] = useState('');
   const [maxParking, setMaxParking] = useState('');
 
-  const apiUrl = "http://localhost:5000/predictions";
+  const apiUrl = "http://localhost:5000/predictions"; // URL to retrieve all house predictions from database
 
   useEffect(() => {
     async function fetchData() {
@@ -98,6 +111,24 @@ function PredictionList() {
           <span className='mt-3'></span>
         </Spinner>
       )}
+      <div className='m-3' style={{ height: '50vh', width: '100%' }}>
+        <GoogleMapReact
+          bootstrapURLKeys={{ key: "AIzaSyAQ8LXqUZwItlgitqZ-C7DHDDcy_2GxRoU" }}
+          defaultCenter={defaultProps.center}
+          defaultZoom={defaultProps.zoom}>
+            
+          {filteredPredictions.map((prediction, index) => (
+            <CustomMarker 
+              key={index}
+              lat={prediction.lat}
+              lng={prediction.long}
+              prediction={prediction}
+              popupText={`$${parseFloat(prediction.prediction).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}\nBedrooms: ${prediction.bedrooms}\nBathrooms: ${prediction.bathrooms}\nSquare Feet: ${prediction.sqft}\nParking: ${prediction.parking}`}
+              icon='/house.png'
+              />
+          ))}
+        </GoogleMapReact>
+      </div>
     <div className="container mb-3">
       <h5>Filter Predictions</h5>
       <Row>
@@ -210,7 +241,6 @@ function PredictionList() {
               <td>{parseFloat(prediction.lat).toFixed(6)}</td>
               <td>{parseFloat(prediction.long).toFixed(6)}</td>
               <td><a target='_blank' href={`http://maps.google.com/maps?z=12&t=m&q=${prediction.lat}+${prediction.long}`}>View</a></td>
-              { /** Street View Preview */}
             </tr>
           ))}
         </tbody>
