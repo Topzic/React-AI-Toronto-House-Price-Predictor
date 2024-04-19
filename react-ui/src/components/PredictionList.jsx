@@ -8,6 +8,7 @@ import GoogleMapReact from 'google-map-react';
 import CustomMarker from './CustomMarker';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated'
 
 // Default map coordinates and zoom level
 const defaultProps = {
@@ -33,6 +34,7 @@ function PredictionList() {
   const [maxSqft, setMaxSqft] = useState('');
   const [minParking, setMinParking] = useState('');
   const [maxParking, setMaxParking] = useState('');
+  const isAuthenticated = useIsAuthenticated()
 
   const apiUrl = "http://localhost:5000/predictions"; // URL to retrieve all house predictions from database
 
@@ -128,7 +130,8 @@ function PredictionList() {
           ))}
         </GoogleMapReact>
       </div>
-    <div className="container mb-3">
+    {isAuthenticated ? (
+      <>
       <h5>Filter Predictions</h5>
       <Row>
       <Col xs={12} md={6}>
@@ -211,6 +214,14 @@ function PredictionList() {
         </div>
       </Col>
     </Row>
+      </>
+    ) : (
+    <>
+      <p>You need to <a href='/login'>login</a> to use the filter feature.</p>
+    </>
+    )}
+    <div className="container mb-3">
+
     </div>
       <Table striped bordered hover>
         <thead>
