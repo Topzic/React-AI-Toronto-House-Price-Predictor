@@ -32,9 +32,6 @@ const userType = new GraphQLObjectType({
       _id: {
         type: GraphQLFloat,
       },
-      // username: {
-      //   type: GraphQLString,
-      // },
       email: {
         type: GraphQLString,
       },
@@ -50,7 +47,10 @@ const housePredictionType = new GraphQLObjectType({
   fields: function () {
     return {
       _id: {
-        type: GraphQLFloat,
+        type: GraphQLString,
+      },
+      email: {
+        type: GraphQLString,
       },
       prediction: {
         type: GraphQLFloat,
@@ -208,28 +208,22 @@ const mutation = new GraphQLObjectType({
             unqiue: true,
             required: true,
           },
-          // username: {
-          //   type: GraphQLString,
-          //   required: true,
-          // },
           password: {
             type: GraphQLString,
             required: true,
           },
         },
         resolve: async function (root, params, context) {
-          let { /*username,*/ email, password } = params;
+          let { email, password } = params;
 
           // Check if a user with the same email already exists
           const existingUser = await UserModel.findOne({ email }).exec();
           if (existingUser) {
-            // If a user with the same email exists, append a unique identifier to the username
-            // username = `${username || email.split("@")[0]}_${Date.now()}`;
             console.log("User already exsist");
             return;
           }
 
-          const userModel = new UserModel({ /*username,*/ email, password });
+          const userModel = new UserModel({ email, password });
           const newUser = await userModel.save();
           console.log("User Successfully Registred: ", newUser);
           if (!newUser) {
@@ -276,8 +270,7 @@ const mutation = new GraphQLObjectType({
               {
                 _id: userInfo._id,
                 email: userInfo.email,
-                userName: userInfo.userName,
-                // role: userInfo.role,
+                role: userInfo.role,
               },
               JWT_SECRET,
               { expiresIn: jwtExpirySeconds }
@@ -286,7 +279,7 @@ const mutation = new GraphQLObjectType({
             // Return user information along with the token
             return {
               email: userInfo.email,
-              // role: userInfo.role,
+              role: userInfo.role,
               token: token, // Include token here
             };
           } catch (error) {
@@ -307,6 +300,9 @@ const mutation = new GraphQLObjectType({
       createHousePrediction: {
         type: housePredictionType,
         args: {
+          email: {
+            type: new GraphQLNonNull(GraphQLString),
+          },
           prediction: {
             type: new GraphQLNonNull(GraphQLFloat),
           },
@@ -344,6 +340,34 @@ const mutation = new GraphQLObjectType({
           } catch (error) {
             throw new Error(error.message);
           }
+        },
+      },
+      predictionsByEmail: {
+        type: new GraphQLList(housePredictionType),
+        args: {
+          email: { type: new GraphQLNonNull(GraphQLString) },
+        },
+        resolve: async (parent, { email }) => {
+          try {
+            const predictions = await HousePredictionModel.find({
+              email,
+            }).exec();
+            if (!predictions) {
+              throw new Error("No predictions found for the specified email");
+            }
+            return predictions;
+          } catch (error) {
+            throw new Error(error.message);
+          }
+        },
+      },
+      deletePrediction: {
+        type: housePredictionType,
+        args: {
+          id: { type: GraphQLString },
+        },
+        resolve(parent, args) {
+          return HousePredictionModel.findByIdAndDelete(args.id);
         },
       },
     };

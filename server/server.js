@@ -64,6 +64,7 @@ app.get("/predictions", async (req, res) => {
 });
 
 exports.savePrediction = async function (
+  email,
   prediction,
   bedrooms,
   bathrooms,
@@ -76,6 +77,7 @@ exports.savePrediction = async function (
   try {
     // Create a new instance of HousePredictionModel
     const newPrediction = new HousePredictionModel({
+      email,
       prediction,
       bedrooms,
       bathrooms,

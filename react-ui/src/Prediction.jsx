@@ -6,8 +6,13 @@ import axios from 'axios';
 import Spinner from 'react-bootstrap/Spinner';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 
 function Prediction() {
+
+  const authUser = useAuthUser()
+  const email = authUser.email;
+
   const [formData, setFormData] = useState({
     bedrooms: '',
     bathrooms: '',
@@ -30,8 +35,9 @@ function Prediction() {
     e.preventDefault();
     setShowLoading(true);
     try {
+      const formDataWithEmail = { ...formData, email: email }
       const result = await axios.get(apiUrl, {
-        params: formData
+        params: formDataWithEmail
       });
       console.log(result);
       setPredictionData(result.data.prediction);

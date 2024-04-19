@@ -20,7 +20,7 @@ function makePrediction(model, data) {
 // Exported function to predict house price
 exports.predictHousePrice = function (req, res) {
   // Extract parameters from the request query
-  const { bedrooms, bathrooms, sqft, parking, houseType, lat, long } =
+  const { bedrooms, bathrooms, sqft, parking, houseType, lat, long, email } =
     req.query;
 
   // Load the trained model
@@ -50,6 +50,7 @@ exports.predictHousePrice = function (req, res) {
   // Save the prediction
   server.savePrediction(
     // Save prediction using server module
+    email,
     parseFloat(prediction[0]).toFixed(2), // Format prediction to two decimal places
     bedrooms, // Pass bedrooms parameter
     bathrooms, // Pass bathrooms parameter

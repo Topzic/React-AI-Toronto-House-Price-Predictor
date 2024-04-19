@@ -37,15 +37,17 @@ function Login() {
     let [email, setEmail] = useState('');
     let [password, setPassword] = useState('');
     let [token, setToken] = useState('');
+    let [role, setRole] = useState('');
    
     const handleLogin = async (event) => {
         event.preventDefault();
 
         try {
           const { data } = await loginUser({
-            variables: { email, password, token }
+            variables: { email, password, token, role }
           });
 
+          console.log("Role: " + data.loginUser.role)
           setEmail('');
           setPassword('');
           console.log('Authenticated: ', data.loginUser);
@@ -59,6 +61,7 @@ function Login() {
               },
               userState: {
                 email: data.loginUser.email,
+                role: data.loginUser.role
               }
             })
             navigate('/home');
