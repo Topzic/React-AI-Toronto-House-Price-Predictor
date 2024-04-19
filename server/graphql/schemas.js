@@ -35,6 +35,9 @@ const userType = new GraphQLObjectType({
       email: {
         type: GraphQLString,
       },
+      role: {
+        type: GraphQLString,
+      },
       password: {
         type: GraphQLString,
       },
@@ -141,55 +144,6 @@ const queryType = new GraphQLObjectType({
           return userInfo;
         },
       },
-      // check if user is logged in
-      isLoggedIn: {
-        type: GraphQLString,
-        args: {
-          email: {
-            name: "email",
-            type: GraphQLString,
-          },
-        },
-        resolve: function (root, params, context) {
-          //
-          // console.log(params);
-          // console.log("in isLoggedIn.....");
-          // console.log(context.req.cookies["token"]);
-          // console.log("token: ");
-          //
-          // Obtain the session token from the requests cookies,
-          // which come with every request
-          const token = context.req.cookies.token;
-          console.log("token from request: ", token);
-          // if the cookie is not set, return 'auth'
-          if (!token) {
-            console.log("no token, so return auth");
-            return "loggedOut";
-          }
-          var payload;
-          try {
-            // Parse the JWT string and store the result in `payload`.
-            // Note that we are passing the key in this method as well.
-            // This method will throw an error
-            // if the token is invalid (if it has expired according to the expiry time
-            //  we set on sign in), or if the signature does not match
-            payload = jwt.verify(token, JWT_SECRET);
-          } catch (e) {
-            if (e instanceof jwt.JsonWebTokenError) {
-              // the JWT is unauthorized, return a 401 error
-              console.log("jwt error");
-              return context.res.status(401).end();
-            }
-            // otherwise, return a bad request error
-            console.log("bad request error");
-            return context.res.status(400).end();
-          }
-          // console.log("email from payload: ", payload.email);
-          // Finally, token is ok, return the email given in the token
-          // res.status(200).send({ screen: payload.email });
-          return payload.email;
-        },
-      },
     };
   },
 });
@@ -276,6 +230,7 @@ const mutation = new GraphQLObjectType({
               { expiresIn: jwtExpirySeconds }
             );
 
+            console.log("User Successfull Authenticated...");
             // Return user information along with the token
             return {
               email: userInfo.email,
@@ -288,15 +243,7 @@ const mutation = new GraphQLObjectType({
           }
         },
       },
-      // a mutation to log the user out
-      logOut: {
-        type: GraphQLString,
-        resolve: (parent, args, { res }) => {
-          res.clearCookie("token");
-          return "Logged out successfully!";
-        },
-      },
-      //
+      //Mutation to create house prediction
       createHousePrediction: {
         type: housePredictionType,
         args: {
@@ -342,6 +289,7 @@ const mutation = new GraphQLObjectType({
           }
         },
       },
+      // Mutation to search predictions by email
       predictionsByEmail: {
         type: new GraphQLList(housePredictionType),
         args: {
@@ -361,6 +309,7 @@ const mutation = new GraphQLObjectType({
           }
         },
       },
+      // Mutation to delete prediction by id
       deletePrediction: {
         type: housePredictionType,
         args: {

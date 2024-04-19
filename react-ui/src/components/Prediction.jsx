@@ -4,7 +4,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Spinner from 'react-bootstrap/Spinner';
-import './App.css';
+import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 

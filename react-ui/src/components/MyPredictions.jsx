@@ -32,7 +32,7 @@ mutation DeletePrediction($id: String!) {
   
 `;
 
-const Profile = () => {
+const MyPredictions = () => {
 
   const tableRef = useRef(null);
   const authUser = useAuthUser();
@@ -102,7 +102,7 @@ const Profile = () => {
 
     return (
         <div className='container mt-3'>
-            <p>Welcome to your profile {email}!</p>
+            {/* <p>Welcome to your predictions!</p> */}
             {userPredictions ? (
             <>
             <Table striped bordered hover ref={tableRef}>
@@ -144,4 +144,4 @@ const Profile = () => {
     );
 }
 
-export default Profile;
+export default MyPredictions;

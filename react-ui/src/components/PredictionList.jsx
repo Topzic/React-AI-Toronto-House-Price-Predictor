@@ -6,7 +6,7 @@ import Table from 'react-bootstrap/Table';
 import { Form, Col, Row } from 'react-bootstrap';
 import GoogleMapReact from 'google-map-react';
 import CustomMarker from './CustomMarker';
-import './App.css';
+import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Default map coordinates and zoom level
@@ -49,7 +49,6 @@ function PredictionList() {
       }
     }
     fetchData();
-    console.log(predictionData)
   }, []);
 
   /**
