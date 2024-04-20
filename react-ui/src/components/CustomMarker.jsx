@@ -9,6 +9,31 @@ const CustomMarker = ({ prediction, icon, popupText }) => {
     setShowPopup(!showPopup);
   };
 
+  function convertHouseType(houseType) {
+    switch (houseType) {
+      case 0:
+        return "Condo Apt";
+      case 1:
+        return "Semi-Detached";
+      case 2:
+          return "Detached";
+      case 3:
+        return "Condo Townhouse";
+      case 4:
+        return "Duplex";
+      case 5:
+        return "Att/Row/Twnhouse";
+      case 6:
+        return "Co-Ownership Apt";
+      case 7:
+        return "Link";
+      case 8:
+        return "Comm Element Condo";
+      default:
+        return "Unknown";
+    }
+  }
+
   return (
     <div style={{ position: 'relative'}}>
       <div style={{ position: 'absolute', transform: 'translate(-50%, -50%)', cursor: 'pointer' }} onClick={togglePopup}>
@@ -40,6 +65,10 @@ const CustomMarker = ({ prediction, icon, popupText }) => {
               <tr>
                 <td>Parking:</td>
                 <td>{prediction.parking}</td>
+              </tr>
+              <tr>
+                <td>Type:</td>
+                <td>{convertHouseType(prediction.houseType)}</td>
               </tr>
             </tbody>
           </table>

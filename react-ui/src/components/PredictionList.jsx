@@ -3,12 +3,14 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Spinner from 'react-bootstrap/Spinner';
 import Table from 'react-bootstrap/Table';
+import Button from 'react-bootstrap/Button';
 import { Form, Col, Row } from 'react-bootstrap';
 import GoogleMapReact from 'google-map-react';
 import CustomMarker from './CustomMarker';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated'
+import { CSVLink } from "react-csv"
 
 // Default map coordinates and zoom level
 const defaultProps = {
@@ -35,6 +37,18 @@ function PredictionList() {
   const [minParking, setMinParking] = useState('');
   const [maxParking, setMaxParking] = useState('');
   const isAuthenticated = useIsAuthenticated()
+
+  const headers = [
+    { label: "Email", key: "email"},
+    { label: "Prediction", key: "prediction"},
+    { label: "Bedrooms", key: "bedrooms"},
+    { label: "Bathrooms", key: "bathrooms"},
+    { label: "Sqft", key: "sqft"},
+    { label: "Parking", key: "parking"},
+    { label: "Email", key: "houseType"},
+    { label: "Latitude", key: "lat"},
+    { label: "Longitude", key: "long"},
+  ]
 
   const apiUrl = "http://localhost:5000/predictions"; // URL to retrieve all house predictions from database
 
@@ -83,6 +97,31 @@ function PredictionList() {
     }
   }
   
+  function setIcon(int) {
+    switch (int) {
+      case 0:
+        return "/condo-apt.png";
+      case 1:
+        return "/semi-detached.png";
+      case 2:
+          return "/detached.png";
+      case 3:
+        return "Condo Townhouse";
+      case 4:
+        return "Duplex";
+      case 5:
+        return "Att/Row/Twnhouse";
+      case 6:
+        return "Co-Ownership Apt";
+      case 7:
+        return "Link";
+      case 8:
+        return "Comm Element Condo";
+      default:
+        return "Unknown";
+    }
+  }
+
   // Filter prediction data based on criteria
   const filteredPredictions = predictionData.filter(prediction => {
     const price = parseFloat(prediction.prediction);
@@ -124,8 +163,7 @@ function PredictionList() {
               lat={prediction.lat}
               lng={prediction.long}
               prediction={prediction}
-              popupText={`$${parseFloat(prediction.prediction).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}\nBedrooms: ${prediction.bedrooms}\nBathrooms: ${prediction.bathrooms}\nSquare Feet: ${prediction.sqft}\nParking: ${prediction.parking}`}
-              icon='/house.png'
+              icon={setIcon(prediction.houseType)}
               />
           ))}
         </GoogleMapReact>
@@ -255,6 +293,15 @@ function PredictionList() {
           ))}
         </tbody>
       </Table>
+      {isAuthenticated ? (
+      <Button className='mb-3'>
+        <CSVLink data={filteredPredictions} headers={headers} filename='MyPredictions' style={{ color:'white'}}>Export Table</CSVLink>
+      </Button>
+      ) : (
+        <>
+          <p>You need to <a href='/login'>login</a> to export the table.</p>
+        </>
+        )}
     </div>
   );
 }

@@ -4,7 +4,7 @@ import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { gql, useMutation } from '@apollo/client';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
-import { useDownloadExcel } from 'react-export-table-to-excel';
+import { CSVLink } from "react-csv"
 
 const GET_USER_PREDICTIONS = gql`
   mutation PredictionsByEmail($email: String!) {
@@ -34,12 +34,23 @@ mutation DeletePrediction($id: String!) {
 
 const MyPredictions = () => {
 
-  const tableRef = useRef(null);
   const authUser = useAuthUser();
   const email = authUser.email;
   const [deleteUserPrediction] = useMutation(DELETE_PREDICTION);
   const [getUserPredictions, { loading, error, data }] = useMutation(GET_USER_PREDICTIONS);
   const [userPredictions, setUserPredictions] = useState(null);
+
+  const headers = [
+    { label: "Email", key: "email"},
+    { label: "Prediction", key: "prediction"},
+    { label: "Bedrooms", key: "bedrooms"},
+    { label: "Bathrooms", key: "bathrooms"},
+    { label: "Sqft", key: "sqft"},
+    { label: "Parking", key: "parking"},
+    { label: "Email", key: "houseType"},
+    { label: "Latitude", key: "lat"},
+    { label: "Longitude", key: "long"},
+  ]
 
   /**
    * 
@@ -94,11 +105,11 @@ const MyPredictions = () => {
     }
   };
 
-  const { onDownload } = useDownloadExcel({
-        currentTableRef: tableRef.current,
-        filename: 'Predictions',
-        sheet: 'Toronto House Price Predictions'
-    })
+  // const { onDownload } = useDownloadExcel({
+  //       currentTableRef: tableRef.current,
+  //       filename: 'Predictions',
+  //       sheet: 'Toronto House Price Predictions'
+  //   })
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
@@ -108,7 +119,7 @@ const MyPredictions = () => {
             {/* <p>Welcome to your predictions!</p> */}
             {userPredictions ? (
             <>
-            <Table striped bordered hover ref={tableRef}>
+            <Table striped bordered hover>
                 <thead>
                 <tr>
                     <th>Prediction</th>
@@ -138,7 +149,9 @@ const MyPredictions = () => {
                 ))}
                 </tbody>
             </Table>
-            <Button className='primary mt-3' onClick={() => onDownload()}>Download Predictions</Button>
+            <Button>
+              <CSVLink data={userPredictions} headers={headers} filename='MyPredictions' style={{ color:'white'}}>Export Table</CSVLink>
+            </Button>
             </>
             ) : (
             <p>No predictions found.</p>
