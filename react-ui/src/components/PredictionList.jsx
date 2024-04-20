@@ -100,25 +100,25 @@ function PredictionList() {
   function setIcon(int) {
     switch (int) {
       case 0:
-        return "/condo-apt.png";
+        return "/apartment.png"; // Condo Apt
       case 1:
-        return "/semi-detached.png";
+        return "/semi-detached.png"; // Semi-Detached
       case 2:
-          return "/detached.png";
+          return "/detached.png"; // Detached
       case 3:
-        return "Condo Townhouse";
+        return "/townhouse.png"; // Condo Townhouse
       case 4:
-        return "Duplex";
+        return "/duplex.png"; // Duplex
       case 5:
-        return "Att/Row/Twnhouse";
+        return "/townhouse.png"; // Att/Row/Twnhouse
       case 6:
-        return "Co-Ownership Apt";
+        return "/apartment.png"; // Co-Ownership Apt
       case 7:
-        return "Link";
+        return "/detached.png"; // Detached // Link
       case 8:
-        return "Comm Element Condo";
+        return "/apartment.png"; // Condo Apt
       default:
-        return "Unknown";
+        return "/detached.png"; // Detached
     }
   }
 
