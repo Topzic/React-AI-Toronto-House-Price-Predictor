@@ -81,10 +81,13 @@ const MyPredictions = () => {
     }
   }, [data]);
 
+  // Function to remove prediction with a specific id
   const handleDeletePrediction = async (id) => {
     try {
       console.log("id: " + id)
       await deleteUserPrediction({ variables: { id } });
+      // Filter out the deleted prediction from the userPredictions state
+      setUserPredictions(prevPredictions => prevPredictions.filter(prediction => prediction._id !== id));
       console.log('Prediction deleted successfully.');
     } catch (error) {
       console.error('Error deleting prediction:', error);
