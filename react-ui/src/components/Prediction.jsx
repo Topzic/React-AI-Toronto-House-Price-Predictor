@@ -1,28 +1,25 @@
-
-
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
-import axios from 'axios';
-import Spinner from 'react-bootstrap/Spinner';
-import '../App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
+import React, { useState } from "react";
+import axios from "axios";
+import Spinner from "react-bootstrap/Spinner";
+import "../App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 
 function Prediction() {
-
-  const authUser = useAuthUser()
+  const authUser = useAuthUser();
   const email = authUser.email;
 
   const [formData, setFormData] = useState({
-    bedrooms: '',
-    bathrooms: '',
-    sqft: '',
-    parking: '',
-    houseType: '',
-    lat: '',
-    long: ''
+    bedrooms: "",
+    bathrooms: "",
+    sqft: "",
+    parking: "",
+    houseType: "",
+    lat: "",
+    long: "",
   });
-  const [predictionData, setPredictionData] = useState('');
+  const [predictionData, setPredictionData] = useState("");
   const [showLoading, setShowLoading] = useState(false);
   const apiUrl = "http://localhost:5000/run";
 
@@ -35,14 +32,14 @@ function Prediction() {
     e.preventDefault();
     setShowLoading(true);
     try {
-      const formDataWithEmail = { ...formData, email: email }
+      const formDataWithEmail = { ...formData, email: email };
       const result = await axios.get(apiUrl, {
-        params: formDataWithEmail
+        params: formDataWithEmail,
       });
       console.log(result);
       setPredictionData(result.data.prediction);
     } catch (error) {
-      console.log('error in handleSubmit:', error);
+      console.log("error in handleSubmit:", error);
     }
     setShowLoading(false);
   };
@@ -55,8 +52,8 @@ function Prediction() {
           <hr />
 
           {showLoading && (
-            <Spinner className='mt-3' animation="border" role="status">
-              <span className='mt-3'></span>
+            <Spinner className="mt-3" animation="border" role="status">
+              <span className="mt-3"></span>
             </Spinner>
           )}
 
@@ -65,13 +62,27 @@ function Prediction() {
               <div className="col-md-6">
                 <div className="form-group">
                   <label>Bedrooms:</label>
-                  <input type="number" className="form-control" name="bedrooms" value={formData.bedrooms} required onChange={handleChange} />
+                  <input
+                    type="number"
+                    className="form-control"
+                    name="bedrooms"
+                    value={formData.bedrooms}
+                    required
+                    onChange={handleChange}
+                  />
                 </div>
               </div>
               <div className="col-md-6">
                 <div className="form-group">
                   <label>Bathrooms:</label>
-                  <input type="number" className="form-control" name="bathrooms" value={formData.bathrooms} required onChange={handleChange} />
+                  <input
+                    type="number"
+                    className="form-control"
+                    name="bathrooms"
+                    value={formData.bathrooms}
+                    required
+                    onChange={handleChange}
+                  />
                 </div>
               </div>
             </div>
@@ -79,28 +90,55 @@ function Prediction() {
               <div className="col-md-6">
                 <div className="form-group">
                   <label>Sqft:</label>
-                  <input type="number" className="form-control" name="sqft" value={formData.sqft} required onChange={handleChange} />
+                  <input
+                    type="number"
+                    className="form-control"
+                    name="sqft"
+                    value={formData.sqft}
+                    required
+                    onChange={handleChange}
+                  />
                 </div>
               </div>
               <div className="col-md-6">
                 <div className="form-group">
                   <label>Parking:</label>
-                  <input type="number" className="form-control" name="parking" value={formData.parking} required onChange={handleChange} />
+                  <input
+                    type="number"
+                    className="form-control"
+                    name="parking"
+                    value={formData.parking}
+                    required
+                    onChange={handleChange}
+                  />
                 </div>
               </div>
-
             </div>
             <div className="row">
-            <div className="col-md-6">
+              <div className="col-md-6">
                 <div className="form-group">
                   <label>Latitude:</label>
-                  <input type="number" className="form-control" name="lat" value={formData.lat} required onChange={handleChange} />
+                  <input
+                    type="number"
+                    className="form-control"
+                    name="lat"
+                    value={formData.lat}
+                    required
+                    onChange={handleChange}
+                  />
                 </div>
               </div>
               <div className="col-md-6">
                 <div className="form-group">
                   <label>Longitude:</label>
-                  <input type="number" className="form-control" name="long" value={formData.long} required onChange={handleChange} />
+                  <input
+                    type="number"
+                    className="form-control"
+                    name="long"
+                    value={formData.long}
+                    required
+                    onChange={handleChange}
+                  />
                 </div>
               </div>
             </div>
@@ -109,11 +147,20 @@ function Prediction() {
               <div className="col-md-6">
                 <div className="form-group">
                   <label>House Type:</label>
-                  <input type="number" className="form-control" name="houseType" value={formData.houseType} required onChange={handleChange} />
+                  <input
+                    type="number"
+                    className="form-control"
+                    name="houseType"
+                    value={formData.houseType}
+                    required
+                    onChange={handleChange}
+                  />
                 </div>
               </div>
             </div>
-            <button type="submit" className="btn btn-primary mt-3">Predict</button>
+            <button type="submit" className="btn btn-primary mt-3">
+              Predict
+            </button>
           </form>
 
           <div className="mt-3">
@@ -126,7 +173,12 @@ function Prediction() {
                 </thead>
                 <tbody>
                   <tr>
-                    <td>${parseFloat(predictionData).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</td>
+                    <td>
+                      $
+                      {parseFloat(predictionData)
+                        .toFixed(2)
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -185,9 +237,6 @@ function Prediction() {
           </table>
         </div>
       </div>
-
-
-
     </div>
   );
 }

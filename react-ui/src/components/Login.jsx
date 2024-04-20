@@ -1,13 +1,13 @@
 /* eslint-disable no-unused-vars */
 /* Login.js */
-import React, { useState, useEffect } from 'react';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import { gql, useQuery, useMutation } from '@apollo/client';
-import { useNavigate } from 'react-router-dom';
-import useSignIn from 'react-auth-kit/hooks/useSignIn';
-import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated'
-import Home from './Home'
+import React, { useState, useEffect } from "react";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import { gql, useQuery, useMutation } from "@apollo/client";
+import { useNavigate } from "react-router-dom";
+import useSignIn from "react-auth-kit/hooks/useSignIn";
+import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
+import Home from "./Home";
 
 // mutation for user login
 const LOGIN_USER = gql`
@@ -22,86 +22,92 @@ const LOGIN_USER = gql`
 
 // Login function component
 function Login() {
-    
-    const signIn = useSignIn();
-    const isAuthenticated = useIsAuthenticated()
-    
-    let navigate = useNavigate()
+  const signIn = useSignIn();
+  const isAuthenticated = useIsAuthenticated();
 
-    // loginUser is a function that can be called to execute
-    // the LOGIN_USER mutation, and { data, loading, error } 
-    // is an object that contains information about the state of the mutation.
-    const [loginUser, { data, loading, error }] = useMutation(LOGIN_USER);
+  let navigate = useNavigate();
 
-    //store input field data, user name and password
-    let [email, setEmail] = useState('');
-    let [password, setPassword] = useState('');
-    let [token, setToken] = useState('');
-    let [role, setRole] = useState('');
-   
-    const handleLogin = async (event) => {
-        event.preventDefault();
+  // loginUser is a function that can be called to execute
+  // the LOGIN_USER mutation, and { data, loading, error }
+  // is an object that contains information about the state of the mutation.
+  const [loginUser, { data, loading, error }] = useMutation(LOGIN_USER);
 
-        try {
-          const { data } = await loginUser({
-            variables: { email, password, token, role }
-          });
+  //store input field data, user name and password
+  let [email, setEmail] = useState("");
+  let [password, setPassword] = useState("");
+  let [token, setToken] = useState("");
+  let [role, setRole] = useState("");
 
-          console.log("Role: " + data.loginUser.role)
-          setEmail('');
-          setPassword('');
-          console.log('Authenticated: ', data.loginUser);
+  const handleLogin = async (event) => {
+    event.preventDefault();
 
-          if (data.loginUser) {
-            signIn({
-              auth: {
-                token: data.loginUser.token,
-                expiresIn: 3600,
-                tokenType: "Bearer"
-              },
-              userState: {
-                email: data.loginUser.email,
-                role: data.loginUser.role
-              }
-            })
-            navigate('/home');
-          }
-        } catch (error) {
-          console.error('Login error:', error);
-        }
-    };
+    try {
+      const { data } = await loginUser({
+        variables: { email, password, token, role },
+      });
 
-    // Render the login form or the welcome message based on the value of 'screen'
-    return (
-        <div className="entryform">
-            { isAuthenticated ? (
-                <Home screen={screen} /> ) : (
+      console.log("Role: " + data.loginUser.role);
+      setEmail("");
+      setPassword("");
+      console.log("Authenticated: ", data.loginUser);
 
-                <Form onSubmit={handleLogin} style={{ marginTop: "15%" }}>
-                    
-                  <p>Don&apos;t have an account? <a href='/registration'>Sign up!</a></p>
+      if (data.loginUser) {
+        signIn({
+          auth: {
+            token: data.loginUser.token,
+            expiresIn: 3600,
+            tokenType: "Bearer",
+          },
+          userState: {
+            email: data.loginUser.email,
+            role: data.loginUser.role,
+          },
+        });
+        navigate("/home");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+    }
+  };
 
-                    <Form.Group>
-                        <Form.Label> Email:</Form.Label>
-                        <Form.Control id="email" type="email"  onChange={(event) => setEmail(event.target.value)} 
-                            placeholder="example@hotmail.com" />
-                    </Form.Group>                    
-                    
-                    <Form.Group>
-                        <Form.Label> Password:</Form.Label>
-                        <Form.Control id="password" type="password"  onChange={(event) => setPassword(event.target.value)}
-                            placeholder="" />
-                    </Form.Group>  
-            
-                    <Button className='mt-3' variant="primary" type="submit" >
-                        Login
-                    </Button>
-                  
-                </Form>
-            )}            
-            
-        </div>
-    );
+  // Render the login form or the welcome message based on the value of 'screen'
+  return (
+    <div className="entryform">
+      {isAuthenticated ? (
+        <Home screen={screen} />
+      ) : (
+        <Form onSubmit={handleLogin} style={{ marginTop: "15%" }}>
+          <p>
+            Don&apos;t have an account? <a href="/registration">Sign up!</a>
+          </p>
+
+          <Form.Group>
+            <Form.Label> Email:</Form.Label>
+            <Form.Control
+              id="email"
+              type="email"
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder="example@hotmail.com"
+            />
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Label> Password:</Form.Label>
+            <Form.Control
+              id="password"
+              type="password"
+              onChange={(event) => setPassword(event.target.value)}
+              placeholder=""
+            />
+          </Form.Group>
+
+          <Button className="mt-3" variant="primary" type="submit">
+            Login
+          </Button>
+        </Form>
+      )}
+    </div>
+  );
 }
 //
 export default Login;
