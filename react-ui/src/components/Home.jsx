@@ -1,9 +1,8 @@
 /* eslint-disable no-unused-vars */
-// Home.jsx
 import React from "react";
-import { Link } from "react-router-dom"; // Import Link for navigation
-import { Container, Row, Col, Button } from "react-bootstrap"; // Import components from react-bootstrap
-import region from "../../public/region.png";
+import { Link } from "react-router-dom";
+import { Container, Row, Col, Button } from "react-bootstrap";
+import region from "/region.png";
 
 function Home() {
   return (
@@ -42,7 +41,7 @@ function Home() {
             </Link>
             <hr className="mb-4" />
             <img src={region} style={{ width: "75%" }}></img>
-            <p>Our data is built in this area of the toronto region.</p>
+            <p>Our data was collected in this area of the toronto region.</p>
           </div>
         </Col>
       </Row>
@@ -50,4 +49,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Home; // Export Home react component

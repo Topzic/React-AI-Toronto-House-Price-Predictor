@@ -5,9 +5,9 @@ import Spinner from "react-bootstrap/Spinner";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
-
 import "./entryform.css";
 
+// Mutation to create new user
 const CREATE_USER = gql`
   mutation CreateUser($email: String!, $password: String!) {
     createUser(email: $email, password: $password) {
@@ -16,13 +16,13 @@ const CREATE_USER = gql`
     }
   }
 `;
-//function component to add a user
+
 const CreateUser = () => {
-  let navigate = useNavigate();
-  let [message, setMessage] = useState("");
+  let navigate = useNavigate(); // Initalize navigation between pages
+  let [message, setMessage] = useState(""); // Initalize message use state
 
   let email, password;
-  const [createUser, { data, loading, error }] = useMutation(CREATE_USER);
+  const [createUser, { data, loading, error }] = useMutation(CREATE_USER); // Assign mutation to createUser variable
 
   if (loading) return "Submitting...";
   if (error) return `Submission error! ${error.message}`;
@@ -33,20 +33,22 @@ const CreateUser = () => {
         onSubmit={async (e) => {
           e.preventDefault();
           try {
+            // Asynchronous call to create new user
             const response = await createUser({
               variables: {
+                // Passes email and password variable to the backend
                 email: email.value,
                 password: password.value,
               },
             });
-            console.log(response.data.createUser);
+            // console.log(response.data.createUser); // Logs user object
             if (response.data.createUser) {
-              navigate("/home");
+              navigate("/home"); // If successful navigates user to home page
             } else {
-              setMessage("That email is already registered to an account.");
+              setMessage("That email is already registered to an account."); // If unsuccessful sets message for user
             }
           } catch (error) {
-            console.error("Error occurred:", error);
+            console.error("Error occurred:", error); // Catches error and logs to console
           }
         }}
       >
@@ -83,4 +85,4 @@ const CreateUser = () => {
   );
 };
 //
-export default CreateUser;
+export default CreateUser; // Export CreateUser react component

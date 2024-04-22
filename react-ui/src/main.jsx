@@ -30,8 +30,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <Router>
     <ApolloProvider client={client}>
       <AuthProvider store={store}>
-        {" "}
-        {/* Wrap App with AuthProvider */}
         <App />
       </AuthProvider>
     </ApolloProvider>

@@ -23,6 +23,18 @@ exports.predictHousePrice = function (req, res) {
   const { bedrooms, bathrooms, sqft, parking, houseType, lat, long, email } =
     req.query;
 
+  if (lat < 43.5890232 || lat > 43.837724)
+    return res
+      .status(200)
+      .send("Latitude must fall within the range of 43.5890232 to 43.837724.");
+
+  if (long < -79.6216927 || long > -79.1240938)
+    return res
+      .status(200)
+      .send(
+        "Longitude must fall within the range of -79.1240938 to -79.6216927."
+      );
+
   // Load the trained model
   console.log("Loading the trained model..."); // Log model loading start
   const modelFileName = "house_price_prediction_model.json"; // Path to trained model JSON file

@@ -168,10 +168,12 @@ function PredictionList() {
       </div>
       {isAuthenticated ? (
         <>
-          <h5>Filter Predictions</h5>
-          <Row>
-            <Col xs={12} md={6}>
-              <div className="m-3">
+          <h3>Filter Predictions</h3>
+          <div className="container-fluid">
+            {/** Price Filters */}
+            <div className="row">
+              <div className="col-sm mb-2">
+                <b>Min Price</b>
                 <Form.Control
                   className="mb-1"
                   type="number"
@@ -179,6 +181,9 @@ function PredictionList() {
                   value={minPrice}
                   onChange={(e) => setMinPrice(e.target.value)}
                 />
+              </div>
+              <div className="col-sm mb-2">
+                <b>Max Price</b>
                 <Form.Control
                   type="number"
                   placeholder="Max Price"
@@ -186,7 +191,12 @@ function PredictionList() {
                   onChange={(e) => setMaxPrice(e.target.value)}
                 />
               </div>
-              <div className="m-3">
+            </div>
+
+            {/** Bedroom Filters */}
+            <div className="row">
+              <div className="col-sm mb-2">
+                <b>Min Bedroom</b>
                 <Form.Control
                   className="mb-1"
                   type="number"
@@ -194,6 +204,9 @@ function PredictionList() {
                   value={minBedrooms}
                   onChange={(e) => setMinBedrooms(e.target.value)}
                 />
+              </div>
+              <div className="col-sm mb-2">
+                <b>Max Bedroom</b>
                 <Form.Control
                   type="number"
                   placeholder="Max Bedrooms"
@@ -201,14 +214,21 @@ function PredictionList() {
                   onChange={(e) => setMaxBedrooms(e.target.value)}
                 />
               </div>
-              <div className="m-3">
+            </div>
+
+            {/** Bathroom Filters */}
+            <div className="row">
+              <div className="col-sm mb-2">
+                <b>Min Bathroom</b>
                 <Form.Control
-                  className="mb-1"
                   type="number"
                   placeholder="Min Bathrooms"
                   value={minBathrooms}
                   onChange={(e) => setMinBathrooms(e.target.value)}
                 />
+              </div>
+              <div className="col-sm mb-2">
+                <b>Max Bathroom</b>
                 <Form.Control
                   type="number"
                   placeholder="Max Bathrooms"
@@ -216,16 +236,21 @@ function PredictionList() {
                   onChange={(e) => setMaxBathrooms(e.target.value)}
                 />
               </div>
-            </Col>
-            <Col xs={12} md={6}>
-              <div className="m-3">
+            </div>
+
+            {/** Sqft Filters */}
+            <div className="row">
+              <div className="col-sm mb-2">
+                <b>Min Sqft</b>
                 <Form.Control
-                  className="mb-1"
                   type="number"
                   placeholder="Min Sqft"
                   value={minSqft}
                   onChange={(e) => setMinSqft(e.target.value)}
                 />
+              </div>
+              <div className="col-sm mb-2">
+                <b>Max Sqft</b>
                 <Form.Control
                   type="number"
                   placeholder="Max Sqft"
@@ -233,14 +258,21 @@ function PredictionList() {
                   onChange={(e) => setMaxSqft(e.target.value)}
                 />
               </div>
-              <div className="m-3">
+            </div>
+
+            {/** Parking Filters */}
+            <div className="row">
+              <div className="col-sm mb-2">
+                <b>Min Parking Spots</b>
                 <Form.Control
-                  className="mb-1"
                   type="text"
                   placeholder="Min Parking Spots"
                   value={minParking}
                   onChange={(e) => setMinParking(e.target.value)}
                 />
+              </div>
+              <div className="col-sm mb-2">
+                <b>Max Parking Spots</b>
                 <Form.Control
                   type="text"
                   placeholder="Max Parking Spots"
@@ -248,8 +280,8 @@ function PredictionList() {
                   onChange={(e) => setMaxParking(e.target.value)}
                 />
               </div>
-            </Col>
-          </Row>
+            </div>
+          </div>
         </>
       ) : (
         <>
@@ -258,7 +290,7 @@ function PredictionList() {
           </p>
         </>
       )}
-      <div className="container mb-3"></div>
+      <div className="container m-3"></div>
       <Table striped bordered hover>
         <thead>
           <tr>

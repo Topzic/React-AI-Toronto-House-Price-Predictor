@@ -36,8 +36,11 @@ function Prediction() {
       const result = await axios.get(apiUrl, {
         params: formDataWithEmail,
       });
-      console.log(result);
-      setPredictionData(result.data.prediction);
+      console.log("Condition: " + (result.data.prediction !== undefined));
+      if (result.data.prediction !== undefined)
+        setPredictionData(result.data.prediction);
+      else setPredictionData(result.data);
+      console.log(predictionData);
     } catch (error) {
       console.log("error in handleSubmit:", error);
     }
@@ -151,6 +154,8 @@ function Prediction() {
                     type="number"
                     className="form-control"
                     name="houseType"
+                    min={0}
+                    max={10}
                     value={formData.houseType}
                     required
                     onChange={handleChange}
@@ -174,10 +179,12 @@ function Prediction() {
                 <tbody>
                   <tr>
                     <td>
-                      $
-                      {parseFloat(predictionData)
-                        .toFixed(2)
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                      {!isNaN(predictionData)
+                        ? "$" +
+                          parseFloat(predictionData)
+                            .toFixed(2)
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                        : predictionData}
                     </td>
                   </tr>
                 </tbody>

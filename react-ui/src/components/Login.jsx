@@ -9,7 +9,7 @@ import useSignIn from "react-auth-kit/hooks/useSignIn";
 import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
 import Home from "./Home";
 
-// mutation for user login
+// Mutation for user login, returns users' email, role and jwt token
 const LOGIN_USER = gql`
   mutation LoginUser($email: String!, $password: String!) {
     loginUser(email: $email, password: $password) {
@@ -32,7 +32,7 @@ function Login() {
   // is an object that contains information about the state of the mutation.
   const [loginUser, { data, loading, error }] = useMutation(LOGIN_USER);
 
-  //store input field data, user name and password
+  // Store input field data, email, password, token, role
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
   let [token, setToken] = useState("");
@@ -42,19 +42,17 @@ function Login() {
     event.preventDefault();
 
     try {
+      // Asynchronous call to attempt user login
       const { data } = await loginUser({
-        variables: { email, password, token, role },
+        // Passes email and password variable to the backend
+        variables: { email, password },
       });
 
-      console.log("Role: " + data.loginUser.role);
-      setEmail("");
-      setPassword("");
-      console.log("Authenticated: ", data.loginUser);
-
       if (data.loginUser) {
+        // React-auth-kit signIn Function
         signIn({
           auth: {
-            token: data.loginUser.token,
+            token: data.loginUser.token, // Sets user jwt token
             expiresIn: 3600,
             tokenType: "Bearer",
           },
@@ -63,6 +61,9 @@ function Login() {
             role: data.loginUser.role,
           },
         });
+        // Logs user role and authenicated user object
+        // console.log("Role: " + data.loginUser.role);
+        // console.log("Authenticated: ", data.loginUser);
         navigate("/home");
       }
     } catch (error) {

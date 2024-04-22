@@ -40,13 +40,12 @@ const MyPredictions = () => {
   const [userPredictions, setUserPredictions] = useState(null);
 
   const headers = [
-    { label: "Email", key: "email" },
     { label: "Prediction", key: "prediction" },
     { label: "Bedrooms", key: "bedrooms" },
     { label: "Bathrooms", key: "bathrooms" },
     { label: "Sqft", key: "sqft" },
     { label: "Parking", key: "parking" },
-    { label: "Email", key: "houseType" },
+    { label: "House Type", key: "houseType" },
     { label: "Latitude", key: "lat" },
     { label: "Longitude", key: "long" },
   ];

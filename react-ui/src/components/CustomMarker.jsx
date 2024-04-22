@@ -2,13 +2,16 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 
+// Functional component for prediction details for map markers
 const CustomMarker = ({ prediction, icon, popupText }) => {
   const [showPopup, setShowPopup] = useState(false);
 
+  // Boolean if window is open or closed
   const togglePopup = () => {
     setShowPopup(!showPopup);
   };
 
+  // Function to convert house type to string from int
   function convertHouseType(houseType) {
     switch (houseType) {
       case 0:
@@ -62,7 +65,7 @@ const CustomMarker = ({ prediction, icon, popupText }) => {
             borderRadius: "5px",
             zIndex: 2,
           }}
-          onClick={togglePopup}
+          onClick={togglePopup} // Click event to open and close property detail window
         >
           <table style={{ width: "100%" }}>
             <tbody>
@@ -109,4 +112,4 @@ const CustomMarker = ({ prediction, icon, popupText }) => {
   );
 };
 
-export default CustomMarker;
+export default CustomMarker; // Export CustomMarker react component
