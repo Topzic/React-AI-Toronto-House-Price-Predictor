@@ -28,3 +28,5 @@ providing insights into the real estate market.
 ![Preview 1](https://github.com/Topzic/React-AI-Toronto-House-Price-Predictor/assets/103236582/a1e58724-918e-4dc6-b746-8bda5889966c)
 ![Preview 2](https://github.com/Topzic/React-AI-Toronto-House-Price-Predictor/assets/103236582/afe32e88-5349-4bc9-a84b-03209fe69934)
 ![Preview 3](https://github.com/Topzic/React-AI-Toronto-House-Price-Predictor/assets/103236582/031e347c-f00e-426d-9fa0-9859ef3b2e25)
+![Preview 4](https://github.com/Topzic/React-AI-Toronto-House-Price-Predictor/assets/103236582/4280a6ea-b701-4c92-9820-a5043f0e76eb)
+
