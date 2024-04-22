@@ -17,6 +17,7 @@ providing insights into the real estate market.
 - React
 - GraphQL
 - MongoDB
+- Machine Learning (Random Forest Regression)
 
 ## Getting Started
 1. Download the repository.
